@@ -77,12 +77,24 @@ type Menu struct {
 
 var menuType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Menu",
-	Fields: &graphql.Fields{
+	Fields: graphql.Fields{
 		"id": &graphql.Field{
 			Type: graphql.String,
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				if menu, ok := p.Source.(Menu); ok {
+					return menu.Id, nil
+				}
+				return nil, nil
+			},
 		},
 		"name": &graphql.Field{
 			Type: graphql.String,
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				if menu, ok := p.Source.(Menu); ok {
+					return menu.Name, nil
+				}
+				return nil, nil
+			},
 		},
 		"description": &graphql.Field{
 			Type: graphql.String,
@@ -91,7 +103,7 @@ var menuType = graphql.NewObject(graphql.ObjectConfig{
 			Type: graphql.Float,
 		},
 		"type": &graphql.Field{
-			Type: constant.MenuTypeGql,
+			Type: constant.MenuCategoryGql,
 		},
 	},
 })
@@ -108,11 +120,12 @@ var menuType = graphql.NewObject(graphql.ObjectConfig{
 //	},
 //})
 
-var queries = graphql.NewObject(graphql.ObjectConfig{
+var Queries = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
-		"getMenus": &graphql.Field{
-			Type: graphql.NewList(menuType),
+		"menus": &graphql.Field{
+			Type:        graphql.NewList(menuType),
+			Description: "Get all menu",
 			Args: graphql.FieldConfigArgument{
 				"category": &graphql.ArgumentConfig{
 					Type:        graphql.String,
@@ -124,11 +137,12 @@ var queries = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				return nil, nil
+				return nil, errors.New("unimplemented")
 			},
 		},
-		"getMenuById": &graphql.Field{
-			Type: menuType,
+		"menu": &graphql.Field{
+			Type:        menuType,
+			Description: "Get memu detail by id",
 			Args: graphql.FieldConfigArgument{
 				"id": &graphql.ArgumentConfig{
 					Type:        graphql.NewNonNull(graphql.String),
@@ -136,14 +150,10 @@ var queries = graphql.NewObject(graphql.ObjectConfig{
 				},
 			},
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				return nil, errors.New("Unimplemented")
+				return nil, errors.New("unimplemented")
 			},
 		},
 	},
 })
 
 //var mutations = graphql.NewObject(graphql.ObjectConfig{})
-
-var Schema, _ = graphql.NewSchema(graphql.SchemaConfig{
-	Query: queries,
-})

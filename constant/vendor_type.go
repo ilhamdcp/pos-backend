@@ -12,18 +12,19 @@ const (
 )
 
 var VendorType = graphql.NewEnum(graphql.EnumConfig{
-	Name: "Vendor",
+	Name:        "Vendor",
+	Description: "The vendor which facilitate the order",
 	Values: graphql.EnumValueConfigMap{
-		"GRAB": &graphql.EnumValueConfig{
+		"Grab": &graphql.EnumValueConfig{
 			Value: GRAB,
 		},
-		"GOJEK": &graphql.EnumValueConfig{
+		"Gojek": &graphql.EnumValueConfig{
 			Value: GOJEK,
 		},
-		"SHOPEE_FOOD": &graphql.EnumValueConfig{
+		"ShopeeFood": &graphql.EnumValueConfig{
 			Value: SHOPEE_FOOD,
 		},
-		"UNKNOWN": &graphql.EnumValueConfig{
+		"Unknown": &graphql.EnumValueConfig{
 			Value: UNKNOWN,
 		},
 	},

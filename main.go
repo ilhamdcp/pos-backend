@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
 	"net/http"
 	"pos-backend/schema"
@@ -21,8 +22,14 @@ func main() {
 	//	return
 	//}
 	//fmt.Println("Graphql API is listening on port 8080")
+	var schema, error = graphql.NewSchema(graphql.SchemaConfig{
+		Query: schema.Queries,
+	})
+	if error != nil {
+		fmt.Println(error)
+	}
 	h := handler.New(&handler.Config{
-		Schema:   &schema.Schema,
+		Schema:   &schema,
 		Pretty:   true,
 		GraphiQL: true,
 	})
